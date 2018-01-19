@@ -1,4 +1,4 @@
-set(_LIB_NAME core)
+set(_LIB_NAME states)
 
 # Include all of the .hpp, .cpp and .h files in the SRC folder
 FILE(GLOB_RECURSE HEADERS *.h*)
