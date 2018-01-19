@@ -1,16 +1,19 @@
-set(_LIB_NAME tests)
+set(EXNAME FC-test-exe)
+set(COMMANDNAME check)
 
-# Include all of the .hpp, .cpp and .h files in the SRC folder
-FILE(GLOB_RECURSE HEADERS *.h*)
-FILE(GLOB_RECURSE SOURCES *.cpp)
+set(SOURCES
+    test.cpp
+)
 
-# Get all of the libraries from the libraries folder
-FILE(GLOB_RECURSE LIBRARIES ${CMAKE_SOURCE_DIR}/lib/*${CMAKE_STATIC_LIBRARY_SUFFIX})
-message(WARNING ${LIBRARIES})
+add_executable(${EXNAME} ${SOURCES})
 
-# Include stuff
-include_directories(SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+addLibs(${EXNAME})
+includeBoost(${EXNAME})
 
-add_compile_options(-DBOOST_SYSTEM_NO_DEPRECATED -DBOOST_ERROR_CODE_HEADER_ONLY)
+add_test(${EXNAME} ${EXNAME})
 
-add_library (${_LIB_NAME} ${HEADERS} ${SOURCES})
+add_custom_target(${COMMANDNAME}
+                  COMMAND ${CMAKE_COMMAND} -E env CTEST_OUTPUT_ON_FAILURE=1
+                  ${CMAKE_CTEST_COMMAND} -C $<CONFIG>
+                  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+                  DEPENDS ${EXNAME})

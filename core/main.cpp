@@ -5,10 +5,12 @@
 #include <iostream>
 
 #include <boost/asio.hpp>
+#include <states.hpp>
 
 int main(int argc, char** argv) {
 
-    std::cout << "Test\n";
+    std::cout << foobar << std::endl;
+    
 
     return 0;
 
