@@ -9,8 +9,11 @@
 
 int main(int argc, char** argv) {
 
-    std::cout << foobar << std::endl;
+    std::cout << Starting up flight computer... << std::endl;
     
+    while (1) {
+        
+    }
 
     return 0;
 
