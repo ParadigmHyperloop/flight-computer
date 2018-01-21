@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['simpleretryprotocol',['SimpleRetryProtocol',['../class_simple_retry_protocol.html',1,'']]]
+  ['nretryprotocol',['NRetryProtocol',['../class_n_retry_protocol.html',1,'']]]
 ];

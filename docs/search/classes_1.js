@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['retryprotocol',['RetryProtocol',['../class_retry_protocol.html',1,'']]]
+  ['connection',['Connection',['../class_connection.html',1,'']]]
 ];

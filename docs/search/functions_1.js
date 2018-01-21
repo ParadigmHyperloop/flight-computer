@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['main',['main',['../main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main.cpp']]]
+  ['connect',['connect',['../class_connection.html#aa766fa034ebea4d21b8f171d5114c8b8',1,'Connection']]],
+  ['connection',['Connection',['../class_connection.html#a4f945752bccb18b869ff600a0a1edbf7',1,'Connection']]]
 ];

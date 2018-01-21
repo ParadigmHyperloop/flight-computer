@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['empty_2ecpp',['empty.cpp',['../networkprotocol_2empty_8cpp.html',1,'(Global Namespace)'],['../states_2empty_8cpp.html',1,'(Global Namespace)']]]
+  ['connection_2ecpp',['Connection.cpp',['../_connection_8cpp.html',1,'']]],
+  ['connection_2ehpp',['Connection.hpp',['../_connection_8hpp.html',1,'']]]
 ];

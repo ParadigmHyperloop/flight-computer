@@ -138,7 +138,7 @@ void RetryProtocol::signalFailure(const std::string& failure_source) const {
 
 void SimpleRetryProtocol::write(boost::asio::ip::udp::socket& socket, const std::string& message, const std::string& caller_name) const {
     
-    bool success;
+    bool success = false;
     rawWrite(socket, message, success);
     
     if (!success)
@@ -148,7 +148,7 @@ void SimpleRetryProtocol::write(boost::asio::ip::udp::socket& socket, const std:
 
 std::string SimpleRetryProtocol::read(boost::asio::ip::udp::socket& socket, const std::string& caller_name) const {
     
-    bool success;
+    bool success = false;
     std::string message = rawRead(socket, success);
     
     if (!success)
