@@ -7,12 +7,10 @@
 
 #include "AbstractControlState.hpp"
 
-AbstractControlState::AbstractControlState(time_t entered, AbstractControlState *lastState) : entered(entered), lastState(lastState) {}
+/*** Defines the constructor for an AbstractControlState. ***/
+AbstractControlState::AbstractControlState(time_t entered, std::shared_ptr<AbstractControlState> *lastState, int stateNumber) : entered(entered), lastState(lastState), stateNumber(stateNumber) {}
 
-void AbstractControlState::test() {
-    
-    
-    
+/*** Simple getter funnction that returns the number of states we've been in. ***/
+int AbstractControlState::returnStateNumber() {
+    return stateNumber;
 }
-
-

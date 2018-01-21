@@ -8,7 +8,6 @@ set(HEADERS
 )
 
 set(SOURCES
-    empty.cpp
     AbstractControlState.cpp
     StandbyState.cpp
     PodState.cpp

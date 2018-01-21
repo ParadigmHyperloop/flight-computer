@@ -3,14 +3,15 @@
 //
 
 #include <iostream>
-
 #include <boost/asio.hpp>
 #include <states.hpp>
 
+#include "PodState.hpp"
+
 int main(int argc, char** argv) {
 
-    std::cout << Starting up flight computer... << std::endl;
-    
+    std::cout << "Starting up flight computer..." << std::endl;
+
     while (1) {
         
     }

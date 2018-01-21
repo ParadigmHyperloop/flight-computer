@@ -1,6 +1,6 @@
 //
 //  StandbyState.hpp
-//  core
+//  FlightCP
 //
 //  Created by Dan Hartman on 1/18/18.
 //
@@ -11,16 +11,23 @@
 #include <stdio.h>
 #include "AbstractControlState.hpp"
 
+/*** A class that represents the initial startup state of the pod. ***/
 class StandbyState : public AbstractControlState {
     
-    virtual void getNextState() {
-        
-    }
-    virtual void makeNextState() {
-        
-    }
+    void getNextState();
     
-    StandbyState(time_t entered) : AbstractControlState(entered, nullptr, 1) {
+    void makeNextState();
+    
+    
+public:
+    /**
+     * Creates a new instance of a StandbyState.
+     *
+     * @param entered
+     * The time that this state was entered.
+     *
+     */
+    StandbyState(long entered) : AbstractControlState(entered, nullptr, 1) {
     
     }
     

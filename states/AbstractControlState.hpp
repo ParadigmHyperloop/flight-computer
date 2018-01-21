@@ -17,7 +17,7 @@ class AbstractControlState {
     
     protected:
     
-    time_t entered;
+    long entered;
     std::shared_ptr<AbstractControlState> *lastState;
     int stateNumber;
     
@@ -37,7 +37,7 @@ class AbstractControlState {
      * Returns the current count of how many states the pod has been in.
      *
      */
-    virtual void returnStateNumber() = 0;
+    int returnStateNumber();
     
     /**
      * Creates a new instance of an AbstractControlState reprenting what the pod is doing at the current moment in time.
@@ -54,7 +54,7 @@ class AbstractControlState {
      */
     AbstractControlState(time_t entered, std::shared_ptr<AbstractControlState> *lastState, int stateNumber);
     
-    
+
 };
 
 #endif /* AbstractControlState_hpp */
