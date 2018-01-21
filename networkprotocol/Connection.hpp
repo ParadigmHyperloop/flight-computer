@@ -34,7 +34,7 @@ class Connection {
          * The name of this connection
          *
          */
-    Connection(std::string hostname, int port, std::shared_ptr<RetryProtocol> retry_protocol, std::string connection_name);
+        Connection(std::string hostname, int port, std::shared_ptr<RetryProtocol> retry_protocol, std::string connection_name);
     
         /**
          * Writes a message to this connection using the retry protocol.
