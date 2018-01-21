@@ -95,32 +95,32 @@ class RetryProtocol {
 /** A simple retry protocol. If a read or write fails, an error will be signaled immediately. */
 class SimpleRetryProtocol : public RetryProtocol {
     
-public:
-    
-    /**
-     * Writes a message to a socket. If there is an error, failure is signaled.
-     *
-     * @param socket
-     * The socket that the message should be written to.
-     *
-     * @param message
-     * The message that should be written to the socket.
-     *
-     * @param caller_name
-     * The name of the object that is calling this method. By default this is "unnamed_instigator"
-     */
-    virtual void write(boost::asio::ip::udp::socket& socket, const std::string& message, const std::string& caller_name = "unnamed_instigator") const;
-    
-    /**
-     * Reads a message from a socket.  If there is an error, failure is signaled.
-     *
-     * @param caller_name
-     * The name of the object that is calling this method. By default this is "unnamed_instigator"
-     *
-     * @return
-     * The message that was read from the socket.
-     */
-    virtual std::string read(boost::asio::ip::udp::socket& socket, const std::string& caller_name = "unnamed_instigator") const;
+    public:
+        
+        /**
+         * Writes a message to a socket. If there is an error, failure is signaled.
+         *
+         * @param socket
+         * The socket that the message should be written to.
+         *
+         * @param message
+         * The message that should be written to the socket.
+         *
+         * @param caller_name
+         * The name of the object that is calling this method. By default this is "unnamed_instigator"
+         */
+        virtual void write(boost::asio::ip::udp::socket& socket, const std::string& message, const std::string& caller_name = "unnamed_instigator") const;
+        
+        /**
+         * Reads a message from a socket.  If there is an error, failure is signaled.
+         *
+         * @param caller_name
+         * The name of the object that is calling this method. By default this is "unnamed_instigator"
+         *
+         * @return
+         * The message that was read from the socket.
+         */
+        virtual std::string read(boost::asio::ip::udp::socket& socket, const std::string& caller_name = "unnamed_instigator") const;
     
 };
 
