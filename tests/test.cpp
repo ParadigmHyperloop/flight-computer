@@ -5,7 +5,7 @@
 //  Created by Logan on 1/18/18.
 //
 
-#define BOOST_TEST_MODULE FC-test-exe
+#define BOOST_TEST_MODULE tests
 #include <boost/test/unit_test.hpp>
 
 #include <states.hpp>

@@ -1,8 +1,9 @@
-set(EXNAME FC-test-exe)
+set(EXNAME tests)
 set(COMMANDNAME check)
 
 set(SOURCES
     test.cpp
+    test-networkprotocol.cpp
 )
 
 add_executable(${EXNAME} ${SOURCES})
