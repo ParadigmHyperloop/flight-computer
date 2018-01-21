@@ -104,6 +104,20 @@ class TestServer {
     
 };
 
+boost::asio::ip::udp::socket createLocalSocket(boost::asio::io_service& service, int port) {
+    
+    // The server is running, conenct to it
+    boost::asio::ip::udp::resolver resolver(service);
+    boost::asio::ip::udp::resolver::query query(boost::asio::ip::udp::v4(), "localhost", "25565");
+    boost::asio::ip::udp::endpoint receiver_endpoint = *resolver.resolve(query);
+    
+    boost::asio::ip::udp::socket socket(service);
+    socket.connect(receiver_endpoint);
+    
+    return socket;
+    
+}
+
 BOOST_AUTO_TEST_CASE(testTestServer) {
  
     boost::asio::io_service io_service;
@@ -112,20 +126,10 @@ BOOST_AUTO_TEST_CASE(testTestServer) {
     // Running the server is blocking so add it to a new thread
     std::thread thread([&io_service] { io_service.run(); });
 
-    boost::asio::io_service io_service_client;
-
-    // The server is running, conenct to it
-    boost::asio::ip::udp::resolver resolver(io_service_client);
-    boost::asio::ip::udp::resolver::query query(boost::asio::ip::udp::v4(), "localhost", "25565");
-    boost::asio::ip::udp::endpoint receiver_endpoint = *resolver.resolve(query);
-
-    boost::asio::ip::udp::socket socket(io_service);
-
-    boost::system::error_code error;
-
     try {
-
-        socket.connect(receiver_endpoint);
+        
+        boost::asio::io_service io_service_client;
+        boost::asio::ip::udp::socket socket = createLocalSocket(io_service_client, 25565);
 
         // Send a test message
         socket.send(boost::asio::buffer("TEST"));
@@ -162,14 +166,7 @@ BOOST_AUTO_TEST_CASE(testSimpleRetry) {
     std::thread thread([&io_service] { io_service.run(); });
     
     boost::asio::io_service io_service_client;
-    
-    // The server is running, conenct to it
-    boost::asio::ip::udp::resolver resolver(io_service_client);
-    boost::asio::ip::udp::resolver::query query(boost::asio::ip::udp::v4(), "localhost", "25565");
-    boost::asio::ip::udp::endpoint receiver_endpoint = *resolver.resolve(query);
-    
-    boost::asio::ip::udp::socket socket(io_service);
-    socket.connect(receiver_endpoint);
+    boost::asio::ip::udp::socket socket = createLocalSocket(io_service_client, 25565);
     
     SimpleRetryProtocol protocol;
     

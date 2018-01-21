@@ -7,24 +7,38 @@
 
 #include "RetryProtocol.hpp"
 
+#include <boost/asio/high_resolution_timer.hpp>
+
 void RetryProtocol::rawWrite(boost::asio::ip::udp::socket& socket, const std::string& message, bool& success) const {
     
     try {
         
-        // Boost.Asio doesn't have timeouts, so we simulate this with a seperate thread
-        boost::thread thread = boost::thread([&socket, &success, &message] {
+        // Boost.Asio doesn't have timeouts built in, so we simulate that
+        boost::asio::io_service& io_service = socket.get_io_service();
+        io_service.reset();
         
-            socket.send(boost::asio::buffer(message));
+        // When this timer signals, the write will have timed out
+        bool timed_out = false;
+        boost::asio::high_resolution_timer timer(io_service, std::chrono::milliseconds(TIMEOUT_MILLISECONDS));
+                                             
+        socket.async_send(boost::asio::buffer(message), [&timer](boost::system::error_code error, size_t bytes) { timer.cancel(); });
+        
+        timer.async_wait([&socket, &timed_out](boost::system::error_code error) {
+            
+            // We timed out, so we should cancel the write
+            if (error != boost::asio::error::operation_aborted)  {
+                
+                timed_out = true;
+                socket.cancel();
+                
+            }
             
         });
-                                             
-        // If we dont finish in time we consider that a read error
-        if (!thread.timed_join(boost::posix_time::milliseconds(TIMEOUT_MILLISECONDS))) {
-         
-             thread.interrupt();
-             success = false;
-         
-        } else success = true;
+        
+        io_service.run_one();
+        io_service.run();
+        
+        success = !timed_out;
         
     } catch (std::runtime_error e) {
         
@@ -40,27 +54,36 @@ std::string RetryProtocol::rawRead(boost::asio::ip::udp::socket& socket, bool& s
     
     try {
         
-        success = false;
+        // Boost.Asio doesn't have timeouts built in, so we simulate that
+        boost::asio::io_service& io_service = socket.get_io_service();
+        io_service.reset();
         
-        size_t num_bytes;
+        // When this timer signals, the write will have timed out
+        bool timed_out = false;
+        boost::asio::high_resolution_timer timer(io_service, std::chrono::milliseconds(TIMEOUT_MILLISECONDS));
         
-        // Boost.Asio doesn't have timeouts, so we simulate this with a seperate thread
-        boost::thread thread = boost::thread([&socket, &success, &num_bytes] {
+        // We need to do a null read to figure out how many bytes we have
+        socket.async_receive(boost::asio::null_buffers(), [&timer](boost::system::error_code error, size_t bytes) { timer.cancel(); });
+        
+        timer.async_wait([&socket, &timed_out](boost::system::error_code error) {
             
-            // We need to do a null read to figure out how many bytes we have
-            socket.receive(boost::asio::null_buffers());
-            num_bytes = socket.available();
+            // We timed out, so we should cancel the read
+            if (error != boost::asio::error::operation_aborted)  {
+                
+                timed_out = true;
+                socket.cancel();
+           
+            }
             
         });
         
-        // If we dont finish in time we consider that a read error
-        if (!thread.timed_join(boost::posix_time::milliseconds(TIMEOUT_MILLISECONDS))) {
-         
-            thread.interrupt();
-            success = false;
-            return "";
+        io_service.run_one();
+        io_service.run();
+        
+        // In order to continue reading, we need to ensure that there was no timeout
+        if (!timed_out) {
             
-        } else {
+            size_t num_bytes = socket.available();
             
             std::shared_ptr<char> buffer = std::shared_ptr<char>(new char[num_bytes]);
             size_t packet_size = socket.receive(boost::asio::buffer(buffer.get(), num_bytes));
@@ -73,6 +96,11 @@ std::string RetryProtocol::rawRead(boost::asio::ip::udp::socket& socket, bool& s
             
             success = true;
             return str;
+            
+        } else {
+            
+            success = false;
+            return "";
             
         }
         
