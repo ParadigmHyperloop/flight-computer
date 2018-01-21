@@ -20,7 +20,7 @@ class StandbyState : public AbstractControlState {
         
     }
     
-    StandbyState(time_t entered) : AbstractControlState(entered, nullptr) {
+    StandbyState(time_t entered) : AbstractControlState(entered, nullptr, 1) {
     
     }
     
