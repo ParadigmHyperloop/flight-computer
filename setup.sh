@@ -1,5 +1,8 @@
 #!/bin/bash
-
+if [ -d include/ ]; then
+  echo "include/ already exists"
+  exit 0
+fi
 # Download boost
 curl -L https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.gz --output boost.tar.gz
 tar -xzf boost.tar.gz
