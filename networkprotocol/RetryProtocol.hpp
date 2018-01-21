@@ -29,19 +29,24 @@ class RetryProtocol {
          * @param socket
          * The socket that the message should be written to.
          *
-         * @param
-         * message
+         * @param message
          * The message that should be written to the socket.
+         *
+         * @param caller_name
+         * The name of the object that is calling this method. By default this is "unnamed_instigator"
          */
-        virtual void write(boost::asio::ip::udp::socket& socket, const std::string& message) const = 0;
+        virtual void write(boost::asio::ip::udp::socket& socket, const std::string& message, const std::string& caller_name = "unnamed_instigator") const = 0;
     
         /**
          * Reads a message from a socket. This method uses the specific RetryProtocol subclass' behavior.
          *
+         * @param caller_name
+         * The name of the object that is calling this method. By default this is "unnamed_instigator"
+         *
          * @return
          * The message that was read from the socket.
          */
-        virtual std::string read(boost::asio::ip::udp::socket& socket) const = 0;
+        virtual std::string read(boost::asio::ip::udp::socket& socket, const std::string& caller_name = "unnamed_instigator") const = 0;
     
     protected:
     
@@ -77,8 +82,11 @@ class RetryProtocol {
         /**
          * Signals that there was either a read or write failure. This is NOT called if rawRead or rawWrite failed, but subclasses should call this
          * as they deem necessary.
+         *
+         * @param failure_source
+         * A string describing where the failure came from. This should include who called the method
          */
-        void signalFailure() const;
+        void signalFailure(const std::string& failure_source) const;
     
 };
 
@@ -95,19 +103,24 @@ public:
      * @param socket
      * The socket that the message should be written to.
      *
-     * @param
-     * message
+     * @param message
      * The message that should be written to the socket.
+     *
+     * @param caller_name
+     * The name of the object that is calling this method. By default this is "unnamed_instigator"
      */
-    virtual void write(boost::asio::ip::udp::socket& socket, const std::string& message) const;
+    virtual void write(boost::asio::ip::udp::socket& socket, const std::string& message, const std::string& caller_name = "unnamed_instigator") const;
     
     /**
      * Reads a message from a socket.  If there is an error, failure is signaled.
      *
+     * @param caller_name
+     * The name of the object that is calling this method. By default this is "unnamed_instigator"
+     *
      * @return
      * The message that was read from the socket.
      */
-    virtual std::string read(boost::asio::ip::udp::socket& socket) const;
+    virtual std::string read(boost::asio::ip::udp::socket& socket, const std::string& caller_name = "unnamed_instigator") const;
     
 };
 

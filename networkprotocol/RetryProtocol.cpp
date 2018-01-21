@@ -21,7 +21,14 @@ void RetryProtocol::rawWrite(boost::asio::ip::udp::socket& socket, const std::st
         bool timed_out = false;
         boost::asio::high_resolution_timer timer(io_service, std::chrono::milliseconds(TIMEOUT_MILLISECONDS));
                                              
-        socket.async_send(boost::asio::buffer(message), [&timer](boost::system::error_code error, size_t bytes) { timer.cancel(); });
+        socket.async_send(boost::asio::buffer(message), [&timer](boost::system::error_code error, size_t bytes) {
+            
+            timer.cancel();
+            
+            if (error && error != boost::asio::error::operation_aborted)
+                throw std::runtime_error("Error writing to socket: " + error.message());
+            
+        });
         
         timer.async_wait([&socket, &timed_out](boost::system::error_code error) {
             
@@ -43,7 +50,7 @@ void RetryProtocol::rawWrite(boost::asio::ip::udp::socket& socket, const std::st
     } catch (std::runtime_error e) {
         
         // Write did not succeed
-        std::cout << "Error with raw write: " << e.what() << std::endl;
+        std::cout << "Raw write exception: " << e.what() << std::endl;
         success = false;
         
     }
@@ -63,7 +70,14 @@ std::string RetryProtocol::rawRead(boost::asio::ip::udp::socket& socket, bool& s
         boost::asio::high_resolution_timer timer(io_service, std::chrono::milliseconds(TIMEOUT_MILLISECONDS));
         
         // We need to do a null read to figure out how many bytes we have
-        socket.async_receive(boost::asio::null_buffers(), [&timer](boost::system::error_code error, size_t bytes) { timer.cancel(); });
+        socket.async_receive(boost::asio::null_buffers(), [&timer](boost::system::error_code error, size_t bytes) {
+            
+            timer.cancel();
+            
+            if (error && error != boost::asio::error::operation_aborted)
+                throw std::runtime_error("Error reading from socket: " + error.message());
+            
+        });
         
         timer.async_wait([&socket, &timed_out](boost::system::error_code error) {
             
@@ -107,38 +121,38 @@ std::string RetryProtocol::rawRead(boost::asio::ip::udp::socket& socket, bool& s
     } catch (std::runtime_error e) {
         
         // Read did not succeed
-        std::cout << "Error with raw read: " << e.what() << std::endl;
+        std::cout << "Raw read exception: " << e.what() << std::endl;
         return "";
         
     }
     
 }
 
-void RetryProtocol::signalFailure() const {
+void RetryProtocol::signalFailure(const std::string& failure_source) const {
     
-    std::cerr << "There was a network failure!\n";
+    std::cerr << "There was a network failure!\nFailure source: " << failure_source << std::endl;
     
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SimpleRetryProtocol::write(boost::asio::ip::udp::socket& socket, const std::string& message) const {
+void SimpleRetryProtocol::write(boost::asio::ip::udp::socket& socket, const std::string& message, const std::string& caller_name) const {
     
     bool success;
     rawWrite(socket, message, success);
     
     if (!success)
-        signalFailure();
+        signalFailure("Write called from " + caller_name);
     
 }
 
-std::string SimpleRetryProtocol::read(boost::asio::ip::udp::socket& socket) const {
+std::string SimpleRetryProtocol::read(boost::asio::ip::udp::socket& socket, const std::string& caller_name) const {
     
     bool success;
     std::string message = rawRead(socket, success);
     
     if (!success)
-        signalFailure();
+        signalFailure("Read called from " + caller_name);
     
     // If rawRead fails, the message will be an empty string, so we can return it here as well
     return message;
