@@ -21,7 +21,7 @@ debugging in a POSIX environment.
 
 # License
 
-Copyright 2018, Paradigm Hyperloop
+Copyright (c) Paradigm Hyperloop, 2017-2018
 All rights reserved
 
 See [LICENSE](LICENSE)
