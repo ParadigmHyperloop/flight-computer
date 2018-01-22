@@ -13,8 +13,8 @@ Main Flight Computer for SpaceX 2018 Hyperloop Pod Competition
 
 Development is done entirely in C++ and must be POSIX compliant.  
 The actual development environment you use is up to you and 
-depends on how you ran your `cmake` (some of use Xcode, some use 
-vim/atom/emacs, some use something completely different).
+depends on how you ran your `cmake` (some use Xcode, some use 
+vim/atom/emacs/sublime).
 
 It is strongly recommended that you do development, or at least 
 debugging in a POSIX environment.
