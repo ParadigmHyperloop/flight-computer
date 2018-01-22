@@ -10,6 +10,7 @@
 
 #include "PodState.hpp"
 #include "StandbyState.hpp"
+#include "boost/date_time/posix_time/posix_time.hpp"
 
 /*** Defines the constructor for PodState. ***/
 PodState::PodState() {
@@ -22,7 +23,7 @@ AbstractControlState *PodState::globalState() {
     
     // If not already allocated then allocate, otherwise do nothing.
     if(!_state) {
-        _state = std::unique_ptr<AbstractControlState>(new StandbyState(time(0)));
+        _state = std::unique_ptr<AbstractControlState>(new StandbyState(1));
     }
     
     return _state.get();

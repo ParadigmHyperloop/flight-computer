@@ -10,13 +10,16 @@
 
 #include <stdio.h>
 #include "AbstractControlState.hpp"
+#include "boost/date_time/posix_time/posix_time.hpp"
 
 /*** A class that represents the initial startup state of the pod. ***/
 class StandbyState : public AbstractControlState {
     
-    void getNextState();
+    virtual int determineNextState();
     
-    void makeNextState();
+    virtual void transitionToNextState(int state, const PodState *globalState);
+    
+    virtual boost::posix_time::ptime returnEnteredTime();
     
     
 public:
@@ -27,8 +30,7 @@ public:
      * The time that this state was entered.
      *
      */
-    StandbyState(long entered) : AbstractControlState(entered, nullptr, 1) {
-    
+    StandbyState(int stateNum) : AbstractControlState(boost::posix_time::microsec_clock::universal_time(), nullptr, stateNum) {
     }
     
 };

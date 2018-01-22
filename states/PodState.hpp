@@ -9,9 +9,13 @@
 #define podState_h
 
 #include "AbstractControlState.hpp"
+#include "StandbyState.hpp"
 
 /*** A struct that represents the global pod state. ***/
 struct PodState {
+
+    public:
+    AbstractControlState *flightState = new StandbyState(1);
     
     /*
      * Initializes the global state variable.

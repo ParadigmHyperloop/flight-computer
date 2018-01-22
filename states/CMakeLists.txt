@@ -1,14 +1,16 @@
 set(LIB_NAME states)
 
 set(HEADERS
-    states.hpp
     AbstractControlState.hpp
+    EmergencyState.hpp
     StandbyState.hpp
     PodState.hpp
+    states.hpp
 )
 
 set(SOURCES
     AbstractControlState.cpp
+    EmergencyState.cpp
     StandbyState.cpp
     PodState.cpp
 )
