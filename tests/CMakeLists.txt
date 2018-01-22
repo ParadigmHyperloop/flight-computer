@@ -3,6 +3,7 @@ set(COMMANDNAME check)
 
 set(SOURCES
     test.cpp
+    test-command.cpp
     test-networkprotocol.cpp
 )
 

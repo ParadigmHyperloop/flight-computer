@@ -14,8 +14,7 @@
 #include <thread>
 
 #include <Connection.hpp>
-#include <NRetryProtocol.cpp>
-#include <RetryProtocol.hpp>
+#include <SimpleRetryProtocol.hpp>
 
 /** The port that all of the testing is performed on */
 #define PORT 25565
@@ -37,8 +36,8 @@ class TestServer {
          * @param delay
          * The time in milliseconds that the response should be delayed by. By default there is no delay.
          */
-        TestServer(boost::asio::io_service& io_service, int port, const std::chrono::milliseconds& delay = std::chrono::milliseconds(0)) :
-                   _delay(delay), _socket(io_service, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port)) {
+        TestServer(boost::asio::io_service& io_service, int port, int num_recieves = 1, const std::chrono::milliseconds& delay = std::chrono::milliseconds(0)) :
+                  _delay(delay), _socket(io_service, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port)), _num_recieves(num_recieves) {
         
              // At this point the server is started (explicitly initialized) so we need to listen for the message
             listen();
@@ -88,6 +87,10 @@ class TestServer {
                     
                     delete [] buffer;
                     
+                    _num_recieves--;
+                    if (_num_recieves)
+                        listen();
+                    
                 } else {
                     
                     // There was an error reading from the socket so we throw an exception, ensuring to delete the buffer
@@ -116,13 +119,16 @@ class TestServer {
         /** The endpoint of the server */
         boost::asio::ip::udp::endpoint _remote_endpoint;
     
+        /** The number of times that the server should recieve */
+        int _num_recieves;
+    
 };
 
 boost::asio::ip::udp::socket createLocalSocket(boost::asio::io_service& service, int port) {
     
     // Resolve the hostname into an IP that boost can use
     boost::asio::ip::udp::resolver resolver(service);
-    boost::asio::ip::udp::resolver::query query(boost::asio::ip::udp::v4(), "localhost", "25565");
+    boost::asio::ip::udp::resolver::query query(boost::asio::ip::udp::v4(), "localhost", std::to_string(PORT));
     boost::asio::ip::udp::endpoint receiver_endpoint = *resolver.resolve(query);
     
     boost::asio::ip::udp::socket socket(service);
@@ -171,10 +177,10 @@ BOOST_AUTO_TEST_CASE(testTestServer) {
     
 }
 
-BOOST_AUTO_TEST_CASE(testSimpleRetry) {
+BOOST_AUTO_TEST_CASE(testNRetry) {
     
     boost::asio::io_service io_service;
-    TestServer server = TestServer(io_service, PORT);
+    TestServer server = TestServer(io_service, PORT, 2, std::chrono::milliseconds(TIMEOUT_MILLISECONDS + 1));
     
     // Running the server is blocking so add it to a new thread
     std::thread thread([&io_service] { io_service.run(); });
@@ -182,7 +188,10 @@ BOOST_AUTO_TEST_CASE(testSimpleRetry) {
     boost::asio::io_service io_service_client;
     boost::asio::ip::udp::socket socket = createLocalSocket(io_service_client, PORT);
     
-    SimpleRetryProtocol protocol;
+    NRetryProtocol protocol(2);
+    
+    protocol.write(socket, "TEST");
+    BOOST_CHECK_EQUAL(strcmp("TEST", protocol.read(socket).c_str()), 0);
     
     protocol.write(socket, "TEST");
     BOOST_CHECK_EQUAL(strcmp("TEST", protocol.read(socket).c_str()), 0);
@@ -196,10 +205,10 @@ BOOST_AUTO_TEST_CASE(testSimpleRetry) {
     
 }
 
-BOOST_AUTO_TEST_CASE(testNRetry) {
+BOOST_AUTO_TEST_CASE(testSimpleRetry) {
     
     boost::asio::io_service io_service;
-    TestServer server = TestServer(io_service, PORT, std::chrono::milliseconds(TIMEOUT_MILLISECONDS + 1));
+    TestServer server = TestServer(io_service, PORT, 2);
     
     // Running the server is blocking so add it to a new thread
     std::thread thread([&io_service] { io_service.run(); });
@@ -207,7 +216,10 @@ BOOST_AUTO_TEST_CASE(testNRetry) {
     boost::asio::io_service io_service_client;
     boost::asio::ip::udp::socket socket = createLocalSocket(io_service_client, PORT);
     
-    NRetryProtocol protocol(2);
+    SimpleRetryProtocol protocol;
+    
+    protocol.write(socket, "TEST");
+    BOOST_CHECK_EQUAL(strcmp("TEST", protocol.read(socket).c_str()), 0);
     
     protocol.write(socket, "TEST");
     BOOST_CHECK_EQUAL(strcmp("TEST", protocol.read(socket).c_str()), 0);
@@ -224,13 +236,16 @@ BOOST_AUTO_TEST_CASE(testNRetry) {
 BOOST_AUTO_TEST_CASE(testConnection) {
     
     boost::asio::io_service io_service;
-    TestServer server = TestServer(io_service, PORT);
+    TestServer server = TestServer(io_service, PORT, 2);
     
     // Running the server is blocking so add it to a new thread
     std::thread thread([&io_service] { io_service.run(); });
     
     std::shared_ptr<RetryProtocol> retry_protocol = std::shared_ptr<RetryProtocol>(new SimpleRetryProtocol);
     Connection connection("localhost", PORT, retry_protocol, "test_connection");
+    
+    connection.write("TEST");
+    BOOST_CHECK_EQUAL(strcmp("TEST", connection.read().c_str()), 0);
     
     connection.write("TEST");
     BOOST_CHECK_EQUAL(strcmp("TEST", connection.read().c_str()), 0);

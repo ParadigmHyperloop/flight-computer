@@ -11,6 +11,7 @@ include(libs)
 enable_testing()
 
 add_subdirectory(networkprotocol)
+add_subdirectory(command)
 add_subdirectory(states)
 add_subdirectory(tests)
 add_subdirectory(core)

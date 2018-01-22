@@ -27,7 +27,7 @@ void Connection::connect() {
     _socket->connect(receiver_endpoint);
     
     _connection_time = time(0);
-    std::cout << "Started the connection \"" << _connection_name << "\" at " << ctime(&_connection_time) << std::endl;
+    std::cout << "Started the connection \"" << _connection_name << "\" at " << ctime(&_connection_time);
     
 }
 

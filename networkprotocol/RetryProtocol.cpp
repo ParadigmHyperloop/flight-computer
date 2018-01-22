@@ -97,6 +97,7 @@ std::string RetryProtocol::rawRead(boost::asio::ip::udp::socket& socket, bool& s
         // In order to continue reading, we need to ensure that there was no timeout
         if (!timed_out) {
             
+            // Sub 1 to ensure that we dont get the null byte at the end
             size_t num_bytes = socket.available();
             
             std::shared_ptr<char> buffer = std::shared_ptr<char>(new char[num_bytes]);
@@ -105,6 +106,7 @@ std::string RetryProtocol::rawRead(boost::asio::ip::udp::socket& socket, bool& s
             std::string str;
             
             // The string must be resized to store the entire packet inside. packet_size might not be equal to num_bytes, so we must use packet_size
+            // We subtract 1 byte because there is an extra null one
             str.resize(packet_size);
             memcpy(str.data(), buffer.get(), packet_size);
             
@@ -130,31 +132,6 @@ std::string RetryProtocol::rawRead(boost::asio::ip::udp::socket& socket, bool& s
 
 void RetryProtocol::signalFailure(const std::string& failure_source) const {
     
-    std::cerr << "There was a network failure!\nFailure source: " << failure_source << std::endl;
-    
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void SimpleRetryProtocol::write(boost::asio::ip::udp::socket& socket, const std::string& message, const std::string& caller_name) const {
-    
-    bool success = false;
-    rawWrite(socket, message, success);
-    
-    if (!success)
-        signalFailure("Write called from " + caller_name);
-    
-}
-
-std::string SimpleRetryProtocol::read(boost::asio::ip::udp::socket& socket, const std::string& caller_name) const {
-    
-    bool success = false;
-    std::string message = rawRead(socket, success);
-    
-    if (!success)
-        signalFailure("Read called from " + caller_name);
-    
-    // If rawRead fails, the message will be an empty string, so we can return it here as well
-    return message;
+    std::cout << "There was a network failure!\nFailure source: " << failure_source << std::endl;
     
 }

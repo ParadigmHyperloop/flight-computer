@@ -5,6 +5,7 @@ set(HEADERS
     networkprotocol.hpp
     NRetryProtocol.hpp
     RetryProtocol.hpp
+    SimpleRetryProtocol.hpp
 )
 
 set(SOURCES
@@ -12,6 +13,7 @@ set(SOURCES
     empty.cpp
     NRetryProtocol.cpp
     RetryProtocol.cpp
+    SimpleRetryProtocol.cpp
 )
 
 add_library(${LIB_NAME} ${HEADERS} ${SOURCES})

@@ -8,10 +8,10 @@
 #define BOOST_TEST_MODULE tests
 #include <boost/test/unit_test.hpp>
 
-#include <states.hpp>
+#include <CommandServer.hpp>
 
 BOOST_AUTO_TEST_CASE(tempTest) {
     
-    BOOST_CHECK_EQUAL(foobar, true);
+    
     
 }
