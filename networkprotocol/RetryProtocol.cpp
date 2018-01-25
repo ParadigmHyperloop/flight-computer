@@ -9,6 +9,8 @@
 
 #include <boost/asio/high_resolution_timer.hpp>
 
+RetryProtocol::RetryProtocol(std::shared_ptr<ErrorHandler> error_handler) : _error_handler(error_handler) {}
+
 void RetryProtocol::rawWrite(boost::asio::ip::udp::socket& socket, const std::string& message, bool& success) const {
     
     try {
@@ -130,8 +132,6 @@ std::string RetryProtocol::rawRead(boost::asio::ip::udp::socket& socket, bool& s
     
 }
 
-void RetryProtocol::signalFailure(const std::string& failure_source) const {
-    
-    std::cout << "There was a network failure!\nFailure source: " << failure_source << std::endl;
-    
+void RetryProtocol::signalFailure(const std::string& failure_message, const ErrorInstigator* instigator) const {
+    _error_handler->signalError(instigator, "Network error -- " + failure_message);
 }

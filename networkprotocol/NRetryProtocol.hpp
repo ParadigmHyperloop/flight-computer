@@ -20,8 +20,11 @@ class NRetryProtocol : public RetryProtocol {
          *
          * @param num_retries
          * The number of times to try read and write operations before signaling an error. This value should be nonzero.
+         *
+         * @param error_handler
+         * The error handler to be used in the event of an error
          */
-        NRetryProtocol(int num_retries);
+        NRetryProtocol(int num_retries, std::shared_ptr<ErrorHandler> error_handler);
     
         /**
          * Writes a message to a socket. If there is a failure, it will be retied n times until signaling a failure.
@@ -33,20 +36,20 @@ class NRetryProtocol : public RetryProtocol {
          * The message that should be written to the socket.
          *
          * @param caller_name
-         * The name of the object that is calling this method. By default this is "unnamed_instigator"
+         * The instigator that is responsible if an error is raised
          */
-        virtual void write(boost::asio::ip::udp::socket& socket, const std::string& message, const std::string& caller_name = "unnamed_instigator") const;
+        virtual void write(boost::asio::ip::udp::socket& socket, const std::string& message, const ErrorInstigator* instigator = nullptr) const;
     
         /**
          * Reads a message from a socket. If there is a failure, it will be retied n times until signaling a failure.
          *
          * @param caller_name
-         * The name of the object that is calling this method. By default this is "unnamed_instigator"
+         * The instigator that is responsible if an error is raised
          *
          * @return
          * The message that was read from the socket.
          */
-        virtual std::string read(boost::asio::ip::udp::socket& socket, const std::string& caller_name = "unnamed_instigator") const;
+        virtual std::string read(boost::asio::ip::udp::socket& socket, const ErrorInstigator* instigator = nullptr) const;
     
     private:
     

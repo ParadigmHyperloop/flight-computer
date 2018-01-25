@@ -13,7 +13,7 @@
 #include "RetryProtocol.hpp"
 
 /** A class for managing a UDP connection to a particular hostname and port. */
-class Connection {
+class Connection : public ErrorInstigator {
     
     public:
     
@@ -52,6 +52,16 @@ class Connection {
          * The message that was read from the connection.
          */
         std::string read() const;
+    
+        /**
+         * Creates a string description of this connection for printing out if there is an error with it
+         *
+         * @param out
+         * The string that will contain the description of the connection after the function is run.
+         */
+        virtual void instigatorDesc(std::string& out) const;
+    
+        ERROR_INSTIGATOR
     
     private:
     

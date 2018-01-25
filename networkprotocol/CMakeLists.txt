@@ -18,3 +18,4 @@ set(SOURCES
 
 add_library(${LIB_NAME} ${HEADERS} ${SOURCES})
 includeBoost(${LIB_NAME})
+addError(${LIB_NAME})
