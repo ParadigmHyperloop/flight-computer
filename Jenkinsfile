@@ -6,7 +6,7 @@ pipeline {
         parallel(
           "Build": {
             sh './setup.sh'
-            sh 'mkdir -p build'
+            sh 'rm -rf build && mkdir -p build'
             sh 'cd build && ls -lah'
             sh 'cd build && cmake -D CMAKE_CXX_COMPILER=/usr/bin/clang -D CMAKE_C_COMPILER=/usr/bin/clang ..'
             sh 'cd build && ls -lah'
