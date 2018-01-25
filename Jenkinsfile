@@ -35,9 +35,7 @@ pipeline {
 
 if (env.BRANCH_NAME == 'docs_deploy') {
   stage('deploy') {
-    steps {
-      sh 'rm -rf /usr/share/nginx/docs.paradigmhyperloop.com/flight-computer/*'
-      sh 'cp -r ./docs/* /usr/share/nginx/docs.paradigmhyperloop.com/flight-computer/'
-    }
+    sh 'rm -rf /usr/share/nginx/docs.paradigmhyperloop.com/flight-computer/*'
+    sh 'cp -r ./docs/* /usr/share/nginx/docs.paradigmhyperloop.com/flight-computer/'
   }
 }
