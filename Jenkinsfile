@@ -5,7 +5,6 @@ pipeline {
       steps {
         parallel(
           "Build": {
-            sh './setup.sh'
             sh 'cmake -DCMAKE_CXX_COMPILER=/usr/bin/clang .'
             sh 'make'
           },
