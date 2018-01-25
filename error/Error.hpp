@@ -26,7 +26,6 @@ class ErrorHandler {
          */
         void signalError(const ErrorInstigator* instigator, const std::string& message);
     
-    
 };
 
 
