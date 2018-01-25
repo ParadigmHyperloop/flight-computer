@@ -5,7 +5,7 @@ if [ -d include/ ]; then
 fi
 
 if [ -f /var/db/jenkins/flight-computer-boost.zip ]; then
-  unzip /var/db/jenkins/flight-computer-boost.zip
+  unzip -q /var/db/jenkins/flight-computer-boost.zip
   exit 0
 fi
 
