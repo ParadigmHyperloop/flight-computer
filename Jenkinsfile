@@ -11,7 +11,7 @@ pipeline {
             sh 'cd build && cmake ..'
             sh 'cd build && ls -lah'
             sh 'cd build && pwd'
-            sh 'cd build && make'
+            sh 'cd build && make -j 12'
           },
           "Documentation": {
             sh 'doxygen ./doxygen-config'
