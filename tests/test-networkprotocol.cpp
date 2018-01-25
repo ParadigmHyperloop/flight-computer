@@ -114,7 +114,7 @@ class TestServer {
         }
     
         /** The time that the return message should be delayed */
-        const std::chrono::milliseconds& _delay;
+        std::chrono::milliseconds _delay;
     
         /** The UDP socket that is listened to */
         boost::asio::ip::udp::socket _socket;

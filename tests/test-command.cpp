@@ -20,7 +20,7 @@ void command() { command_called = true; }
 
 BOOST_AUTO_TEST_CASE(testTestCommandServer) {
     
-    CommandServer server = CommandServer(PORT);
+    CommandServer server(PORT);
     std::shared_ptr<CommandTicket> ticket = server.addCommandConnection("TEST", &command);
     
     boost::asio::io_service io_service;
