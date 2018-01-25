@@ -22,7 +22,7 @@ pipeline {
     }
     stage('Test') {
       steps {
-         sh 'make check'
+         sh 'cd build && make check'
       }
     }
   }
