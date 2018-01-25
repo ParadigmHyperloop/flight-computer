@@ -12,7 +12,7 @@ pipeline {
             sh 'cd build && ls -lah'
             sh 'cd build && pwd'
             sh 'cd build && make -j 12'
-          },
+          },          
           "Documentation": {
             sh 'doxygen ./doxygen-config'
             sh 'zip -r docs.zip docs'
@@ -23,6 +23,14 @@ pipeline {
     stage('Test') {
       steps {
          sh 'cd build && make check'
+      }
+    }
+    if (env.BRANCH_NAME == 'master') {
+      stage('deploy') {
+        steps {
+          sh 'rm -rf /usr/share/nginx/docs.paradigmhyperloop.com/flight-computer/*'
+          sh 'cp -r ./docs/* /usr/share/nginx/docs.paradigmhyperloop.com/flight-computer/'
+        }
       }
     }
   }
