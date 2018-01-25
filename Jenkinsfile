@@ -6,7 +6,9 @@ pipeline {
         parallel(
           "Build": {
             sh 'mkdir -p build'
+            sh 'cd build && ls -lah'
             sh 'cd build && cmake ..'
+            sh 'cd build && ls -lah'
             sh 'cd build && make'
           },
           "Documentation": {
