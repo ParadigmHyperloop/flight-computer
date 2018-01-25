@@ -7,7 +7,7 @@ pipeline {
           "Build": {
             sh 'mkdir -p build'
             sh 'cd build && ls -lah'
-            sh 'cd build && cmake ..'
+            sh 'cd build && cmake -D CMAKE_CXX_COMPILER=(which clang++) -D CMAKE_C_COMPILER=(which clang) ..'
             sh 'cd build && ls -lah'
             sh 'cd build && pwd'
             sh 'cd build && make'
