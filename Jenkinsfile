@@ -5,11 +5,13 @@ pipeline {
       steps {
         parallel(
           "Build": {
-            sh 'mkdir -p build'
+            sh './setup.sh'
+            sh 'rm -rf build && mkdir -p build'
             sh 'cd build && ls -lah'
             sh 'cd build && cmake ..'
             sh 'cd build && ls -lah'
-            sh 'cd build && make'
+            sh 'cd build && pwd'
+            sh 'cd build && make -j 12'
           },
           "Documentation": {
             sh 'doxygen ./doxygen-config'
@@ -20,7 +22,7 @@ pipeline {
     }
     stage('Test') {
       steps {
-         sh 'make check'
+         sh 'cd build && make check'
       }
     }
   }
