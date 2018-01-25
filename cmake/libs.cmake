@@ -3,7 +3,6 @@ function(addLibs target)
 set(LIBRARIES
     networkprotocol
     command
-    states
 )
 
 set(INCLUDES
