@@ -5,8 +5,9 @@ pipeline {
       steps {
         parallel(
           "Build": {
-            sh 'cmake -DCMAKE_CXX_COMPILER=/usr/bin/clang .'
-            sh 'make'
+            sh 'mkdir -p build'
+            sh 'cd build && cmake ..'
+            sh 'cd build && make'
           },
           "Documentation": {
             sh 'doxygen ./doxygen-config'
