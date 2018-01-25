@@ -27,7 +27,7 @@ class NRetryProtocol : public RetryProtocol {
         NRetryProtocol(int num_retries, std::shared_ptr<ErrorHandler> error_handler);
     
         /**
-         * Writes a message to a socket. If there is a failure, it will be retied n times until signaling a failure.
+         * Writes a message to a socket. If there is a failure, it will be retried n times until signaling a failure.
          *
          * @param socket
          * The socket that the message should be written to.
@@ -41,7 +41,7 @@ class NRetryProtocol : public RetryProtocol {
         virtual void write(boost::asio::ip::udp::socket& socket, const std::string& message, const ErrorInstigator* instigator = nullptr) const;
     
         /**
-         * Reads a message from a socket. If there is a failure, it will be retied n times until signaling a failure.
+         * Reads a message from a socket. If there is a failure, it will be retried n times until signaling a failure.
          *
          * @param caller_name
          * The instigator that is responsible if an error is raised
