@@ -110,7 +110,7 @@ std::string RetryProtocol::rawRead(boost::asio::ip::udp::socket& socket, bool& s
             // The string must be resized to store the entire packet inside. packet_size might not be equal to num_bytes, so we must use packet_size
             // We subtract 1 byte because there is an extra null one
             str.resize(packet_size);
-            memcpy(static_cast<void*>(str.data()), buffer.get(), packet_size);
+            memcpy(const_cast<char*>(str.data()), buffer.get(), packet_size);
             
             success = true;
             return str;
