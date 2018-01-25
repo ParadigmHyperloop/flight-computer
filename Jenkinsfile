@@ -27,12 +27,11 @@ pipeline {
     }
     stage ('Deploy') {
             when {
-                // Only say hello if a "greeting" is requested
-                expression { env.BRANCH_NAME == 'docs_deploy' }
+              expression { env.BRANCH_NAME == 'docs_deploy' }
             }
             steps {
-                 sh 'rm -rf /usr/share/nginx/docs.paradigmhyperloop.com/flight-computer/*'
-                 sh 'cp -r ./docs/* /usr/share/nginx/docs.paradigmhyperloop.com/flight-computer/'
+              sh 'rm -rf ' + env.JENKINS_HOME + '/userContent/docs/flight-computer/*'
+              sh 'cp -r ./docs/* ' + env.JENKINS_HOME + '/userContent/docs/flight-computer/'
             }
     }
   }
