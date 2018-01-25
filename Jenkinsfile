@@ -25,18 +25,19 @@ pipeline {
          sh 'cd build && make check'
       }
     }
-    if (env.BRANCH_NAME == 'master') {
-      stage('deploy') {
-        steps {
-          sh 'rm -rf /usr/share/nginx/docs.paradigmhyperloop.com/flight-computer/*'
-          sh 'cp -r ./docs/* /usr/share/nginx/docs.paradigmhyperloop.com/flight-computer/'
-        }
-      }
-    }
   }
   post {
     always {
       archive 'docs.zip'
+    }
+  }
+}
+
+if (env.BRANCH_NAME == 'master') {
+  stage('deploy') {
+    steps {
+      sh 'rm -rf /usr/share/nginx/docs.paradigmhyperloop.com/flight-computer/*'
+      sh 'cp -r ./docs/* /usr/share/nginx/docs.paradigmhyperloop.com/flight-computer/'
     }
   }
 }
