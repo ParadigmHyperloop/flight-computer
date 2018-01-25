@@ -9,6 +9,7 @@ pipeline {
             sh 'cd build && ls -lah'
             sh 'cd build && cmake ..'
             sh 'cd build && ls -lah'
+            sh 'cd build && pwd'
             sh 'cd build && make'
           },
           "Documentation": {
