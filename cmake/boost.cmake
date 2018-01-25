@@ -20,4 +20,7 @@ include_directories(SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/../include/)
 add_compile_options(-DBOOST_SYSTEM_NO_DEPRECATED -DBOOST_ERROR_CODE_HEADER_ONLY)
 target_link_libraries(${libName} ${LIBRARIES})
 
+find_package(Threads REQUIRED)
+target_link_libraries(${libName} ${CMAKE_THREADS_LIBS_INIT})
+
 endfunction(includeBoost)
