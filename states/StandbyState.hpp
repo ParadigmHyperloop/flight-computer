@@ -15,13 +15,6 @@
 /*** A class that represents the initial startup state of the pod. ***/
 class StandbyState : public AbstractControlState {
     
-    virtual int determineNextState();
-    
-    virtual void transitionToNextState(int state, const PodState *globalState);
-    
-    virtual boost::posix_time::ptime returnEnteredTime();
-    
-    
 public:
     /**
      * Creates a new instance of a StandbyState.
