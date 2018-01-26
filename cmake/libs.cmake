@@ -4,6 +4,7 @@ set(INC_ERROR ${CMAKE_SOURCE_DIR}/error)
 set(LIBRARIES
     networkprotocol
     command
+    states
 )
 
 
