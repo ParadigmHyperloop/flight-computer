@@ -10,6 +10,7 @@ set(SOURCES
 add_executable(${EXNAME} ${SOURCES})
 
 addLibs(${EXNAME})
+addError(${EXNAME})
 includeBoost(${EXNAME})
 
 add_test(${EXNAME} ${EXNAME})

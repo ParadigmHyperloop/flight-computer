@@ -10,6 +10,7 @@ include(libs)
 
 enable_testing()
 
+add_subdirectory(error)
 add_subdirectory(networkprotocol)
 add_subdirectory(command)
 add_subdirectory(states)

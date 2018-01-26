@@ -15,8 +15,13 @@ class SimpleRetryProtocol : public NRetryProtocol {
     
     public:
     
-        /** Creates a retry protocol that will signal failure immediately if a read or a write fails */
-        SimpleRetryProtocol();
+        /**
+         * Creates a retry protocol that will signal failure immediately if a read or a write fails
+         *
+         * @param error_handler
+         * The error handler to be used in the event of an error
+         */
+        SimpleRetryProtocol(std::shared_ptr<ErrorHandler> error_handler);
     
 };
 

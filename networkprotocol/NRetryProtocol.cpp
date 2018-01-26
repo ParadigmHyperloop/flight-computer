@@ -7,9 +7,10 @@
 
 #include "NRetryProtocol.hpp"
 
-NRetryProtocol::NRetryProtocol(int num_retries) : _num_retries(num_retries) {}
+NRetryProtocol::NRetryProtocol(int num_retries, std::shared_ptr<ErrorHandler> error_handler) : RetryProtocol(error_handler),
+                              _num_retries(num_retries) {}
 
-void NRetryProtocol::write(boost::asio::ip::udp::socket& socket, const std::string& message, const std::string& caller_name) const {
+void NRetryProtocol::write(boost::asio::ip::udp::socket& socket, const std::string& message, const ErrorInstigator* instigator) const {
     
     bool success = false;
     
@@ -22,11 +23,11 @@ void NRetryProtocol::write(boost::asio::ip::udp::socket& socket, const std::stri
     }
     
     if (!success)
-        signalFailure("Write called from " + caller_name);
+        signalFailure("Write error", instigator);
     
 }
 
-std::string NRetryProtocol::read(boost::asio::ip::udp::socket& socket, const std::string& caller_name) const {
+std::string NRetryProtocol::read(boost::asio::ip::udp::socket& socket, const ErrorInstigator* instigator) const {
     
     bool success = false;
     std::string message;
@@ -40,7 +41,7 @@ std::string NRetryProtocol::read(boost::asio::ip::udp::socket& socket, const std
     }
     
     if (!success)
-        signalFailure("Read called from " + caller_name);
+        signalFailure("Read error", instigator);
     
     // If rawRead fails, the message will be an empty string, so we can return it here as well
     return message;

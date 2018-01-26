@@ -7,4 +7,4 @@
 
 #include "SimpleRetryProtocol.hpp"
 
-SimpleRetryProtocol::SimpleRetryProtocol() : NRetryProtocol(1) {}
+SimpleRetryProtocol::SimpleRetryProtocol(std::shared_ptr<ErrorHandler> error_handler) : NRetryProtocol(1, error_handler) {}

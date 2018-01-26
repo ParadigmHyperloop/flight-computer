@@ -90,7 +90,7 @@ void CommandServer::recieveMessage(std::shared_ptr<CommandConnection> connection
             // The string must be resized to store the entire packet inside. packet_size might not be equal to num_bytes, so we must use packet_size
             // We subtract 1 byte because there is an extra null one
             str.resize(packet_size - 1);
-            memcpy(str.data(), buffer.get(), packet_size - 1);
+            memcpy(const_cast<char*>(str.data()), buffer.get(), packet_size - 1);
         
             _command_queue.push(_str_hasher(str));
             

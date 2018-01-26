@@ -15,6 +15,17 @@ Connection::Connection(std::string hostname, int port, std::shared_ptr<RetryProt
     
 }
 
+void Connection::instigatorDesc(std::string& out) const {
+    
+    genericDescription(out);
+    
+    // Make sure to add connection specific information 
+    out += "\nHostname: " + _hostname + ", Port:" + std::to_string(_port) + ", Connection name: " + _connection_name + ", Connection started: " + ctime(&_connection_time);
+    
+}
+
+std::string Connection::className() const { return "Connection"; }
+
 void Connection::connect() {
     
     // Resolve the hostname so boost can understand it
@@ -31,5 +42,5 @@ void Connection::connect() {
     
 }
 
-void Connection::write(const std::string& message) const { _retry_protocol->write(*_socket, message, _connection_name); }
-std::string Connection::read() const { return _retry_protocol->read(*_socket, _connection_name); }
+void Connection::write(const std::string& message) const { _retry_protocol->write(*_socket, message, this); }
+std::string Connection::read() const { return _retry_protocol->read(*_socket, this); }
