@@ -11,7 +11,12 @@
 /*** Defines the constructor for an AbstractControlState. ***/
 AbstractControlState::AbstractControlState(boost::posix_time::ptime entered, std::shared_ptr<AbstractControlState> *lastState, int stateNumber) : entered(entered), lastState(lastState), stateNumber(stateNumber) {}
 
-/*** Simple getter funnction that returns the number of states we've been in. ***/
+/*** Simple getter function that returns the number of states we've been in. ***/
 int AbstractControlState::returnStateNumber() {
     return stateNumber;
+}
+
+/*** Simple getter function that returns the time we entered this state. ***/
+boost::posix_time::ptime AbstractControlState::returnEnteredTime() {
+    return entered;
 }
