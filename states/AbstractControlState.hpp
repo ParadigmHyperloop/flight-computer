@@ -12,15 +12,14 @@
 #include <time.h>
 #include <boost/shared_ptr.hpp>
 #include "boost/date_time/posix_time/posix_time.hpp"
-#include "PodState.hpp"
 
 /*** An abstract class for representing shared functionality between different types of control states. ***/
 class AbstractControlState {
     
     protected:
-    
     boost::posix_time::ptime entered;
     std::shared_ptr<AbstractControlState> *lastState;
+    std::shared_ptr<AbstractControlState> *nextState = nullptr;
     const int stateNumber;
     
     /**
@@ -39,27 +38,13 @@ class AbstractControlState {
     AbstractControlState(boost::posix_time::ptime entered, std::shared_ptr<AbstractControlState> *lastState, int stateNumber);
     
     public:
-    /**
-     * Determines the next state that the pod will transition into based on sensor data read.
-     *
-     * @return The type of state to transition into.
-     */
-    virtual int determineNextState() = 0;
-    
-    /**
-     * Determines the next state that the pod will transition into based on sensor data read.
-     *
-     */
-    virtual void transitionToNextState(int state, const PodState *globalState) = 0;
     
     /**
      * Gets the time in microseconds that this state was entered.
      *
      * @return an integer time in microseconds
      */
-    virtual boost::posix_time::ptime returnEnteredTime() {
-        return entered;
-    }
+    boost::posix_time::ptime returnEnteredTime();
     
     /**
      * Returns the current count of how many states the pod has been in.

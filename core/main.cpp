@@ -13,19 +13,19 @@ int main(int argc, char** argv) {
 
     std::cout << "Starting up flight computer..." << std::endl;
     
-    AbstractControlState *internalState = PodState::globalState();
-    int *nextState;
+    //PodState *internalState = new PodState();
+    int nextState;
     
     sleep(5);
     
     std::cout << "Starting hyperloop..." << std::endl;
-    std::cout << "Pod internal state allocated at address: " << internalState <<  std::endl;
+    std::cout << "Pod internal state allocated at address: "  <<  std::endl;
     
-    while (1) {
-        *nextState = internalState->determineNextState();
-        internalState->transitionToNextState(*nextState, internalState);
-        std::cout << "Heartbeat timeout, transitioning to emergency state" << std::endl;
-    }
+//    while (1) {
+//        nextState = internalState->determineNextState();
+//        //internalState->transitionToNextState(nextState, internalState);
+//        std::cout << "Heartbeat timeout, transitioning to emergency state" << std::endl;
+//    }
     return 0;
 
 }
