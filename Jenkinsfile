@@ -30,8 +30,8 @@ pipeline {
               expression { env.BRANCH_NAME == 'docs_deploy' }
             }
             steps {
-              sh 'rm -rf ' + env.JENKINS_HOME + '/userContent/docs/flight-computer/*'
-              sh 'cp -r ./docs/* ' + env.JENKINS_HOME + '/userContent/docs/flight-computer/'
+              sh "rm -rf ${env.DOCS_WEB_ROOT}/${env.JOB_NAME}/*"
+              sh "cp -r ./docs/* ${env.DOCS_WEB_ROOT}/${env.JOB_NAME}"
             }
     }
   }
