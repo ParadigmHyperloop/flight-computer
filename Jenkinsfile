@@ -30,6 +30,7 @@ pipeline {
         expression { env.BRANCH_NAME == 'master' }
       }
       steps {
+        sh "mkdir -p ${env.DOCS_WEB_ROOT}/${env.JOB_NAME}"
         sh "rm -rf ${env.DOCS_WEB_ROOT}/${env.JOB_NAME}/*"
         sh "cp -r ./docs/* ${env.DOCS_WEB_ROOT}/${env.JOB_NAME}"
       }
