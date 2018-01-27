@@ -27,7 +27,7 @@ pipeline {
     }
     stage ('Deploy') {
             when {
-              expression { env.BRANCH_NAME == 'docs_deploy' }
+              expression { env.BRANCH_NAME == 'master' }
             }
             steps {
               sh "rm -rf ${env.DOCS_WEB_ROOT}/${env.JOB_NAME}/*"
