@@ -14,7 +14,18 @@
 /*** A struct that represents the global pod state. ***/
 struct PodState {
 
-    public:
+  private:
+    int numberOfStates = 0;
+    float acceleration, velocity, distance = 0;
+    bool initialized = false;
+    
+    /**
+     * Private Constructor.
+     *
+     */
+    PodState();
+
+  public:
     std::shared_ptr<AbstractControlState> flightState = std::shared_ptr<AbstractControlState>(new StandbyState(1));
     
     /**
@@ -25,6 +36,12 @@ struct PodState {
     int determineNextState();
     
     /**
+     * Prints debug information to the command line.
+     *
+     */
+    void printDebug();
+    
+    /**
      * Determines the next state that the pod will transition into based on sensor data read.
      *
      */
@@ -33,16 +50,10 @@ struct PodState {
     /*
      * Initializes the global state variable.
      * This can only be allocated once and any attempt to do so multiple times will do nothing.
+     * Effectively a singleton class.
      */
     static PodState *globalState();
     
-    private:
-    
-    /**
-     * Creates a new instance of a PodState
-     *
-     */
-    PodState();
 };
     
 #endif /* podState_h */

@@ -6,3 +6,12 @@
 //
 
 #include "EmergencyState.hpp"
+
+EmergencyState::EmergencyState(int stateNum) : AbstractControlState(boost::posix_time::microsec_clock::universal_time(), nullptr, stateNum) {
+    stateName = "Emergency";
+}
+
+std::string EmergencyState::returnStateName() {
+    return "Emergency";
+}
+

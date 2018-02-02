@@ -14,7 +14,7 @@
 class EmergencyState : public AbstractControlState {
 
     
-public:
+  public:
     /**
      * Creates a new instance of a EmergencyState.
      *
@@ -22,10 +22,9 @@ public:
      * The time that this state was entered.
      *
      */
-    EmergencyState(int stateNum) :
-    AbstractControlState(boost::posix_time::microsec_clock::universal_time(), nullptr, stateNum) {
-        
-    }
+    EmergencyState(int stateNum);
+    
+    virtual std::string returnStateName();
 };
 
 #endif /* EmergencyState_hpp */

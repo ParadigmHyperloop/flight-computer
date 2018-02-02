@@ -9,6 +9,14 @@
 #include "PodState.hpp"
 #include "EmergencyState.hpp"
 
+StandbyState::StandbyState(int stateNum) : AbstractControlState(boost::posix_time::microsec_clock::universal_time(), nullptr, stateNum) {
+    stateName = "Standby";
+}
+
+std::string StandbyState::returnStateName() {
+    return "Standby";
+}
+
 // Finish defining this once I determine what information renders specific statee transitions.
 //int StandbyState::determineNextState()  {
 //

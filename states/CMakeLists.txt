@@ -6,6 +6,7 @@ set(HEADERS
     StandbyState.hpp
     PodState.hpp
     states.hpp
+    Boot.hpp
 )
 
 set(SOURCES
@@ -13,6 +14,7 @@ set(SOURCES
     EmergencyState.cpp
     StandbyState.cpp
     PodState.cpp
+    Boot.cpp
 )
 
 add_library(${LIB_NAME} ${HEADERS} ${SOURCES})

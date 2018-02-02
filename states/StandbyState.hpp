@@ -15,7 +15,7 @@
 /*** A class that represents the initial startup state of the pod. ***/
 class StandbyState : public AbstractControlState {
     
-public:
+  public:
     /**
      * Creates a new instance of a StandbyState.
      *
@@ -23,9 +23,9 @@ public:
      * The time that this state was entered.
      *
      */
-    StandbyState(int stateNum) : AbstractControlState(boost::posix_time::microsec_clock::universal_time(), nullptr, stateNum) {
-    }
+    StandbyState(int stateNum);
     
+    virtual std::string returnStateName();
 };
 
 #endif /* StandbyState_hpp */
